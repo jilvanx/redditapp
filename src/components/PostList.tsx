@@ -1,8 +1,11 @@
-import { View, StyleSheet, RefreshControl, FlatList } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
+
+import { Text } from "./Text";
+import { PostItem } from "./PostItem";
+import { HEIGHT } from "../constants/tokens";
 import { usePosts } from "../hooks/usePosts";
 import { Children, PostType } from "../models/Post";
-import Spinner from "react-native-loading-spinner-overlay";
-import { PostItem } from "./PostItem";
 
 export function PostList({ postType }: { postType: PostType }) {
   const {
@@ -13,10 +16,9 @@ export function PostList({ postType }: { postType: PostType }) {
     postType,
   });
 
-  const ITEM_HEIGHT = 100;
-
-  const renderItem = ({ item }: { item: Children }) => (
+  const _renderItem = ({ item }: { item: Children }) => (
     <PostItem
+      id={item.data.id}
       key={item.data.id}
       created={item.data.created}
       thumbnail={item.data.thumbnail}
@@ -28,26 +30,33 @@ export function PostList({ postType }: { postType: PostType }) {
     />
   );
 
-  const keyExtractor = (item: Children) => item.data.id;
+  const _keyExtractor = (item: Children) => item.data.id;
+
+  const _listEmptyComponent = () => {
+    return (
+      <View>
+        <Text>No posts available</Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <Spinner visible={isLoading} />
       <FlatList
-        nestedScrollEnabled={true}
-        horizontal={false}
-        data={postData?.data.children}
-        keyExtractor={keyExtractor}
-        maxToRenderPerBatch={8}
         removeClippedSubviews={true}
+        data={postData?.data.children}
+        renderItem={_renderItem}
+        keyExtractor={_keyExtractor}
+        maxToRenderPerBatch={25}
         contentContainerStyle={{ gap: 8 }}
         showsVerticalScrollIndicator={false}
         getItemLayout={(_, index) => ({
-          length: ITEM_HEIGHT,
-          offset: ITEM_HEIGHT * index,
+          length: HEIGHT,
+          offset: HEIGHT * index,
           index,
         })}
-        renderItem={renderItem}
+        ListEmptyComponent={_listEmptyComponent}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }

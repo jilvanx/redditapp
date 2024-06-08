@@ -15,7 +15,7 @@ import {
 import { PostList } from "../components/PostList";
 import { Text } from "../components/Text";
 import { PostType } from "../models/Post";
-import { colors } from "../constants/colors";
+import { COLORS } from "../constants/tokens";
 import { OfflineBanner } from "../components/OfflineBanner";
 import { useOnline } from "../hooks/useOnline";
 
@@ -59,11 +59,11 @@ export default function HomeScreen() {
       <View style={styles.tabBar}>
         {props.navigationState.routes.map((route, i) => {
           const backgroundColor = inputRange.map((inputIndex) =>
-            inputIndex === i ? colors.blue : colors.white
+            inputIndex === i ? COLORS.blue : COLORS.white
           );
 
           const color = inputRange.map((inputIndex) =>
-            inputIndex === i ? colors.white : colors.blue
+            inputIndex === i ? COLORS.white : COLORS.blue
           );
 
           return (
@@ -92,7 +92,6 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    console.log("🚀 DEGUB -> HomeScreen -> isOnline:", isOnline);
     if (!isOnline) {
       Alert.alert(
         "Internet Connection",

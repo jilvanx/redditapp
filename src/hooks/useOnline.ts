@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 export const useOnline = () => {
   const [isOnline, setIsOnline] = useState(true);

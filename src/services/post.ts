@@ -1,4 +1,4 @@
-import { AxiosError, api } from "../constants/api";
+import { api, AxiosError } from "../constants/api";
 import { PostResponse, PostType } from "../models/Post";
 
 const getPosts = async (type: PostType) => {

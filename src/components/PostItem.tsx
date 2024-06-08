@@ -1,13 +1,13 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Image } from "expo-image";
+import { router } from "expo-router";
+import { useCallback } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { Image } from "./Image";
 import { Text } from "./Text";
 import { getRelativeTimeString } from "../util/date";
-import { useMemo } from "react";
-import { WebView } from "react-native-webview";
-import { router } from "expo-router";
-import { colors } from "../constants/colors";
 
 type PostItemProps = {
+  id: string;
   created: number;
   thumbnail: string;
   title: string;
@@ -18,6 +18,7 @@ type PostItemProps = {
 };
 
 export function PostItem({
+  id,
   created,
   thumbnail,
   title,
@@ -26,7 +27,7 @@ export function PostItem({
   num_comments,
   permalink,
 }: PostItemProps) {
-  const dateRelative = useMemo(() => getRelativeTimeString(created), []);
+  const getdateRelative = useCallback(() => getRelativeTimeString(created), []);
 
   return (
     <>
@@ -40,23 +41,10 @@ export function PostItem({
       >
         <View style={styles.container}>
           <View style={styles.body}>
-            {thumbnail ? (
-              <Image
-                source="https://picsum.photos/seed/696/3000/2000"
-                style={{ width: 300, height: 200, backgroundColor: "#eee" }}
-              />
-            ) : (
-              // <Image
-              //   style={styles.image}
-              //   source={{ uri: thumbnail }}
-              //   contentFit="cover"
-              //   transition={1000}
-              // />
-              <View style={styles.whiteSquare} />
-            )}
+            <Image uri={thumbnail} id={id} />
             <View style={styles.content}>
               <View style={styles.header}>
-                <Text>{dateRelative}</Text>
+                <Text>{getdateRelative()}</Text>
               </View>
               <View>
                 <Text type="title">{title}</Text>
@@ -89,12 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     gap: 8,
-  },
-  image: { width: 100, height: 100, backgroundColor: "#0553" },
-  whiteSquare: {
-    width: 100,
-    height: 100,
-    backgroundColor: colors.white,
   },
   footer: {
     flexDirection: "row",

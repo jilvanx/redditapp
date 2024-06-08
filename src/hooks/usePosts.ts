@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "../services/post";
+
 import { PostType } from "../models/Post";
+import { getPosts } from "../services/post";
 
 type UsePostProps = {
   postType: PostType;
